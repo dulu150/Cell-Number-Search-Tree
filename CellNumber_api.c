@@ -32,7 +32,13 @@ int CellNumberStrCompress(char* pSrcCellNumber, char* pResult)
 	/* 循环遍历源字符串进行转换，转换过程中检查是否存在非法字符 */
 	for (ulIndex = 0; ulIndex < (ulCellNumLen / 2); ulIndex++)
 	{
-		pResult[ulIndex] = pSrcCellNumber[ulIndex*2] + pSrcCellNumber[ulIndex*2 + 1];
+		pResult[ulIndex] = (pSrcCellNumber[ulIndex*2] - '0') * 10 + (pSrcCellNumber[ulIndex*2 + 1] - '0');
+	}
+
+	/* 源字符串可能是包含奇数个字符的号码,最后一个字符需要单独处理 */
+	if (0 != (ulCellNumLen % 2))
+	{
+		pResult[ulIndex] = pSrcCellNumber[ulCellNumLen - 1] - '0';
 	}
 
 	return 0;
@@ -59,8 +65,8 @@ int CellNumberStrDeCompress(char* pSrcCellNumber, char* pResult)
 	/* 循环遍历源字符串进行转换，转换过程中检查是否存在非法字符 */
 	for (ulIndex = 0; ulIndex < ulCellNumLen; ulIndex++)
 	{
-		pResult[ulIndex*2] = (pSrcCellNumber[ulIndex] / 10) % 10;
-		pResult[ulIndex*2 + 1] = pSrcCellNumber[ulIndex] % 10;
+		pResult[ulIndex*2] = (pSrcCellNumber[ulIndex] / 10) % 10 + '0';
+		pResult[ulIndex*2 + 1] = pSrcCellNumber[ulIndex] % 10 + '0';
 	}
 
 	return 0;
